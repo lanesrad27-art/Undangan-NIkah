@@ -346,6 +346,10 @@ iframe.map-f{width:100%;height:300px;border:none;display:block}
   <div class="env-glass">
     <div class="env-icon">💌</div>
     <div class="env-pretitle">✦ Undangan Pernikahan ✦</div>
+    <div id="env-kepada-wrap" style="margin-bottom:.6rem;display:none">
+      <div style="font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sage-d);opacity:.8">Kepada Yth.</div>
+      <div id="env-tamu-name" style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--sage-deep);font-weight:600;margin-top:.15rem"></div>
+    </div>
     <div class="env-name">Tamir & Rahayu</div>
     <div class="env-date">Sabtu, 25 Maret 2028 · Baturaden</div>
     <button class="env-btn" onclick="openInvitation()">
@@ -367,6 +371,7 @@ iframe.map-f{width:100%;height:300px;border:none;display:block}
     <li><a href="#ucapan" onclick="closeMenu()">Ucapan</a></li>
     <li><a href="#rsvp" onclick="closeMenu()">RSVP</a></li>
     <li><a href="#gift" onclick="closeMenu()">Hadiah</a></li>
+    <li><a href="#share" onclick="closeMenu()">Bagikan</a></li>
   </ul>
   <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -399,7 +404,7 @@ iframe.map-f{width:100%;height:300px;border:none;display:block}
   </div>
   <div class="hero-c">
     <div class="hero-tag">✦ Bismillahirrahmanirrahim ✦</div>
-    <div class="hero-bismillah">Dengan memohon ridho Allah SWT<br>kami mengundang kehadiran Bapak / Ibu / Saudara/i</div>
+    <div class="hero-bismillah">Dengan memohon ridho Allah SWT<br>kami mengundang kehadiran<br><span id="hero-tamu-name" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:normal;font-weight:600;color:var(--gold-l);display:none"></span><span id="hero-tamu-default">Bapak / Ibu / Saudara/i</span></div>
     <div class="hero-gold-line"><span>✿</span></div>
     <div class="hero-names">
       <div class="hero-name">Tamir</div>
@@ -681,6 +686,28 @@ iframe.map-f{width:100%;height:300px;border:none;display:block}
   </div>
 </section>
 
+<!-- SHARE UNDANGAN -->
+<section id="share" class="sec" style="background:var(--white);padding:3rem 1.5rem">
+  <div class="sec-inner fi" style="text-align:center;max-width:500px">
+    <div class="sec-tag">Bagikan</div>
+    <h2 class="sec-title">Bagikan Undangan</h2>
+    <div class="sec-bar"></div>
+    <p style="font-size:.85rem;color:var(--text-m);font-family:'Cormorant Garamond',serif;font-style:italic;line-height:1.8;margin-bottom:1.8rem">Salin link undangan ini untuk dibagikan kepada tamu undangan via WhatsApp.</p>
+    <div style="background:var(--ivory-d);border:1px solid rgba(107,158,112,.2);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1rem;display:flex;gap:.8rem;align-items:center">
+      <input id="share-link" type="text" readonly style="flex:1;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:.78rem;color:var(--text);outline:none" value="https://lanesrad27-art.github.io/Undangan-NIkah/?to=Nama+Tamu">
+      <button onclick="copyShareLink()" style="background:var(--sage-d);color:#fff;border:none;padding:.45rem 1rem;border-radius:8px;cursor:pointer;font-size:.75rem;font-family:'Nunito',sans-serif;font-weight:600;white-space:nowrap;transition:all .2s">Salin</button>
+    </div>
+    <div style="background:var(--ivory-d);border:1px solid rgba(107,158,112,.2);border-radius:14px;padding:1rem 1.2rem;margin-bottom:1.5rem">
+      <div style="font-size:.72rem;color:var(--text-m);margin-bottom:.5rem;text-align:left">✏️ Masukkan nama tamu untuk generate link personal:</div>
+      <div style="display:flex;gap:.8rem">
+        <input id="input-tamu" type="text" placeholder="Contoh: Budi Santoso" style="flex:1;padding:.6rem .9rem;border:1.5px solid rgba(107,158,112,.22);border-radius:10px;font-family:'Nunito',sans-serif;font-size:.82rem;color:var(--text);background:var(--ivory);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--sage-d)'" onblur="this.style.borderColor='rgba(107,158,112,.22)'" oninput="updateShareLink()">
+        <button onclick="shareToWA()" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;padding:.6rem 1rem;border-radius:10px;cursor:pointer;font-size:.8rem;font-family:'Nunito',sans-serif;font-weight:600;transition:all .2s;white-space:nowrap">📲 WA</button>
+      </div>
+    </div>
+    <div id="share-ok" style="display:none;font-size:.8rem;color:var(--sage-d);padding:.6rem;background:rgba(107,158,112,.1);border-radius:8px;margin-top:.5rem">✅ Link tersalin!</div>
+  </div>
+</section>
+
 <!-- CLOSING -->
 <section id="closing">
   <div class="cl-wrap fi">
@@ -704,6 +731,42 @@ iframe.map-f{width:100%;height:300px;border:none;display:block}
 </section>
 
 <script>
+// ── SUPABASE CONFIG ───────────────────────────────────────
+const SB_URL = 'https://cgubuvhsquawxiudlfco.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcndkYXVteWZmd3l6Z3lkY2JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NDc2NDIsImV4cCI6MjA5NjUyMzY0Mn0.yQ6egtOGJaUi9b4548N9nx0WsUp2vzd_jyKHuM1AUQk'; // Ganti dengan anon key kamu
+
+async function sbInsert(table, data) {
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': `Bearer ${SB_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(data)
+    });
+    return res.ok;
+  } catch (e) { return false; }
+}
+
+async function sbSelect(table, order = 'created_at.desc') {
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/${table}?order=${order}`, {
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': `Bearer ${SB_KEY}`
+      }
+    });
+    return res.ok ? await res.json() : [];
+  } catch (e) { return []; }
+}
+
+// ── NAMA TAMU DARI URL ────────────────────────────────────
+const urlParams = new URLSearchParams(window.location.search);
+const NAMA_TAMU = urlParams.get('to') ? decodeURIComponent(urlParams.get('to')) : '';
+
 // ── FOTO DATA ─────────────────────────────────────────────
 const PHOTOS = [
   {url:'foto1.jpeg',  cat:'prewedding', lbl:'Foto 1'},
@@ -720,6 +783,53 @@ const PHOTOS = [
   {url:'foto12.jpeg', cat:'prewedding', lbl:'Foto 12'},
 ];
 const MUSIC_URL = 'https://files.catbox.moe/u5winy.mp3';
+
+// ── INIT NAMA TAMU ────────────────────────────────────────
+function initNamaTamu() {
+  if (!NAMA_TAMU) return;
+  // Envelope
+  const wrap = document.getElementById('env-kepada-wrap');
+  const tamuEl = document.getElementById('env-tamu-name');
+  if (wrap && tamuEl) { wrap.style.display = 'block'; tamuEl.textContent = NAMA_TAMU; }
+  // Hero
+  const heroEl = document.getElementById('hero-tamu-name');
+  const heroDefault = document.getElementById('hero-tamu-default');
+  if (heroEl && heroDefault) {
+    heroEl.textContent = NAMA_TAMU;
+    heroEl.style.display = 'block';
+    heroDefault.style.display = 'none';
+  }
+  // Auto-fill RSVP & Ucapan nama
+  setTimeout(() => {
+    const rNm = document.getElementById('r-nm');
+    const uNm = document.getElementById('u-nm');
+    if (rNm && !rNm.value) rNm.value = NAMA_TAMU;
+    if (uNm && !uNm.value) uNm.value = NAMA_TAMU;
+  }, 800);
+}
+initNamaTamu();
+
+// ── SHARE FUNCTIONS ───────────────────────────────────────
+const BASE_LINK = 'https://lanesrad27-art.github.io/Undangan-NIkah/';
+function updateShareLink() {
+  const nm = document.getElementById('input-tamu').value.trim();
+  const link = nm ? `${BASE_LINK}?to=${encodeURIComponent(nm)}` : BASE_LINK;
+  document.getElementById('share-link').value = link;
+}
+function copyShareLink() {
+  const link = document.getElementById('share-link').value;
+  navigator.clipboard.writeText(link).then(() => {
+    const ok = document.getElementById('share-ok');
+    ok.style.display = 'block'; setTimeout(() => ok.style.display = 'none', 2500);
+  });
+}
+function shareToWA() {
+  const nm = document.getElementById('input-tamu').value.trim();
+  if (!nm) { alert('Masukkan nama tamu terlebih dahulu ya 🙏'); return; }
+  const link = `${BASE_LINK}?to=${encodeURIComponent(nm)}`;
+  const pesan = `Assalamu'alaikum *${nm}* 🌿\n\nBismillah, kami mengundang kehadiran Bapak/Ibu/Saudara/i di pernikahan kami:\n\n👰🤵 *Tamir & Rahayu*\n📅 Sabtu, 25 Maret 2028\n📍 Agathis Resto, Baturaden\n\nDetail lengkap di undangan digital kami:\n${link}\n\n_#FullTankFullLove_ 💚`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(pesan)}`, '_blank');
+}
 
 // ── PETALS ────────────────────────────────────────────────
 function spawnPetals() {
@@ -859,52 +969,74 @@ function startWebAudio(btn, bars) {
 
 // ── UCAPAN ────────────────────────────────────────────────
 const UC_KEY = 'ucapan_tamir_rahayu_2028';
-function kirimUcapan() {
+async function kirimUcapan() {
   const nm = document.getElementById('u-nm').value.trim();
   const msg = document.getElementById('u-msg').value.trim();
   const hd = document.getElementById('u-hd').value;
   if (!nm || !msg || !hd) { alert('Mohon lengkapi semua field ya 🙏'); return; }
-  const list = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
-  list.unshift({ nm, msg, hd, tgl: new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) });
-  localStorage.setItem(UC_KEY, JSON.stringify(list));
+  const btn = document.querySelector('#ucapan .btn-send');
+  btn.disabled = true; btn.textContent = 'Mengirim...';
+  const data = { nama: nm, pesan: msg, kehadiran: hd };
+  const ok = await sbInsert('ucapan', data);
+  if (!ok) {
+    // Fallback localStorage
+    const list = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
+    list.unshift({ nm, msg, hd, tgl: new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) });
+    localStorage.setItem(UC_KEY, JSON.stringify(list));
+  }
   document.getElementById('u-nm').value = '';
   document.getElementById('u-msg').value = '';
   document.getElementById('u-hd').value = '';
-  const ok = document.getElementById('send-ok');
-  ok.style.display = 'block'; setTimeout(() => ok.style.display = 'none', 4000);
+  btn.disabled = false; btn.textContent = 'Kirim Ucapan 💌';
+  const okEl = document.getElementById('send-ok');
+  okEl.style.display = 'block'; setTimeout(() => okEl.style.display = 'none', 4000);
   loadUcapan();
 }
-function loadUcapan() {
-  const list = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
+async function loadUcapan() {
+  let list = await sbSelect('ucapan');
+  if (!list || !list.length) {
+    // Fallback localStorage
+    const local = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
+    list = local.map(u => ({ nama: u.nm, pesan: u.msg, kehadiran: u.hd, created_at: u.tgl }));
+  }
   document.getElementById('uc-ct').textContent = list.length;
   const el = document.getElementById('uc-list');
   if (!list.length) { el.innerHTML = '<div style="text-align:center;color:var(--text-l);font-size:.83rem;font-style:italic;padding:1.5rem">Belum ada ucapan. Jadilah yang pertama! 💌</div>'; return; }
   const icons = {'Hadir':'✅','Tidak Hadir':'❌','Mungkin':'🤔'};
-  el.innerHTML = list.map(u => `
-    <div class="uc-card">
+  el.innerHTML = list.map(u => {
+    const tgl = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) : '';
+    return `<div class="uc-card">
       <div class="uc-head">
-        <span class="uc-nm">👤 ${u.nm}</span>
-        <span class="uc-tag">${icons[u.hd]||''} ${u.hd}</span>
+        <span class="uc-nm">👤 ${u.nama||u.nm}</span>
+        <span class="uc-tag">${icons[u.kehadiran||u.hd]||''} ${u.kehadiran||u.hd}</span>
       </div>
-      <div class="uc-msg">"${u.msg}"</div>
-      <div class="uc-time">${u.tgl}</div>
-    </div>`).join('');
+      <div class="uc-msg">"${u.pesan||u.msg}"</div>
+      <div class="uc-time">${tgl}</div>
+    </div>`;
+  }).join('');
 }
 
 // ── RSVP ──────────────────────────────────────────────────
 const RSVP_KEY = 'rsvp_tamir_rahayu_2028';
-function kirimRSVP() {
+async function kirimRSVP() {
   const nm = document.getElementById('r-nm').value.trim();
   const jml = document.getElementById('r-jml').value;
   const hd = document.getElementById('r-hd').value;
   if (!nm || !jml) { alert('Mohon isi nama dan jumlah tamu 🙏'); return; }
-  const list = JSON.parse(localStorage.getItem(RSVP_KEY) || '[]');
-  list.push({ nm, jml, hd });
-  localStorage.setItem(RSVP_KEY, JSON.stringify(list));
+  const btn = document.querySelector('#rsvp .btn-send');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  const data = { nama: nm, jumlah: parseInt(jml), kehadiran: hd };
+  const ok = await sbInsert('rsvp', data);
+  if (!ok) {
+    const list = JSON.parse(localStorage.getItem(RSVP_KEY) || '[]');
+    list.push({ nm, jml, hd });
+    localStorage.setItem(RSVP_KEY, JSON.stringify(list));
+  }
   document.getElementById('r-nm').value = '';
   document.getElementById('r-jml').value = '';
-  const ok = document.getElementById('r-ok');
-  ok.style.display = 'block'; setTimeout(() => ok.style.display = 'none', 4000);
+  btn.disabled = false; btn.textContent = 'Kirim Konfirmasi 📋';
+  const okEl = document.getElementById('r-ok');
+  okEl.style.display = 'block'; setTimeout(() => okEl.style.display = 'none', 4000);
 }
 
 // ── COPY REKENING ──────────────────────────────────────────
