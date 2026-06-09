@@ -753,12 +753,12 @@ iframe.map-f{width:100%;height:300px;border:none;display:block}
 
 <script>
 // ── SUPABASE CONFIG ───────────────────────────────────────
-const SB_URL = 'https://cgubuvhsquawxiudlfco.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcndkYXVteWZmd3l6Z3lkY2JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NDc2NDIsImV4cCI6MjA5NjUyMzY0Mn0.yQ6egtOGJaUi9b4548N9nx0WsUp2vzd_jyKHuM1AUQk'; // Ganti dengan anon key kamu
+ SB_URL = 'https://cgubuvhsquawxiudlfco.supabase.co';
+ SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljcndkYXVteWZmd3l6Z3lkY2JqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NDc2NDIsImV4cCI6MjA5NjUyMzY0Mn0.yQ6egtOGJaUi9b4548N9nx0WsUp2vzd_jyKHuM1AUQk'; // Ganti dengan anon key kamu
 
 async function sbInsert(table, data) {
   try {
-    const res = await fetch(`${SB_URL}/rest/v1/${table}`, {
+     res = await fetch(`${SB_URL}/rest/v1/${table}`, {
       method: 'POST',
       headers: {
         'apikey': SB_KEY,
@@ -774,7 +774,7 @@ async function sbInsert(table, data) {
 
 async function sbSelect(table, order = 'created_at.desc') {
   try {
-    const res = await fetch(`${SB_URL}/rest/v1/${table}?order=${order}`, {
+     res = await fetch(`${SB_URL}/rest/v1/${table}?order=${order}`, {
       headers: {
         'apikey': SB_KEY,
         'Authorization': `Bearer ${SB_KEY}`
@@ -785,11 +785,11 @@ async function sbSelect(table, order = 'created_at.desc') {
 }
 
 // ── NAMA TAMU DARI URL ────────────────────────────────────
-const urlParams = new URLSearchParams(window.location.search);
-const NAMA_TAMU = urlParams.get('to') ? decodeURIComponent(urlParams.get('to')) : '';
+ urlParams = new URLSearchParams(window.location.search);
+ NAMA_TAMU = urlParams.get('to') ? decodeURIComponent(urlParams.get('to')) : '';
 
 // ── FOTO DATA ─────────────────────────────────────────────
-const PHOTOS = [
+ PHOTOS = [
   {url:'foto1.jpeg',  cat:'prewedding', lbl:'Foto 1'},
   {url:'foto2.jpeg',  cat:'prewedding', lbl:'Foto 2'},
   {url:'foto3.jpeg',  cat:'prewedding', lbl:'Foto 3'},
@@ -803,18 +803,18 @@ const PHOTOS = [
   {url:'foto11.jpeg', cat:'family',     lbl:'Foto 11'},
   {url:'foto12.jpeg', cat:'prewedding', lbl:'Foto 12'},
 ];
-const MUSIC_URL = 'https://files.catbox.moe/u5winy.mp3';
+ MUSIC_URL = 'https://files.catbox.moe/u5winy.mp3';
 
 // ── INIT NAMA TAMU ────────────────────────────────────────
 function initNamaTamu() {
   // Envelope kepada
   if (NAMA_TAMU) {
-    const wrap = document.getElementById('env-kepada-wrap');
-    const tamuEl = document.getElementById('env-tamu-name');
+     wrap = document.getElementById('env-kepada-wrap');
+     tamuEl = document.getElementById('env-tamu-name');
     if (wrap && tamuEl) { wrap.style.display = 'block'; tamuEl.textContent = NAMA_TAMU; }
     // Hero
-    const heroEl = document.getElementById('hero-tamu-name');
-    const heroDefault = document.getElementById('hero-tamu-default');
+     heroEl = document.getElementById('hero-tamu-name');
+     heroDefault = document.getElementById('hero-tamu-default');
     if (heroEl && heroDefault) {
       heroEl.textContent = NAMA_TAMU;
       heroEl.style.display = 'block';
@@ -822,14 +822,14 @@ function initNamaTamu() {
     }
     // Auto-fill RSVP & Ucapan
     setTimeout(() => {
-      const rNm = document.getElementById('r-nm');
-      const uNm = document.getElementById('u-nm');
+       rNm = document.getElementById('r-nm');
+       uNm = document.getElementById('u-nm');
       if (rNm && !rNm.value) rNm.value = NAMA_TAMU;
       if (uNm && !uNm.value) uNm.value = NAMA_TAMU;
     }, 800);
   }
   // Show guest popup if name exists
-  const popup = document.getElementById('guest-popup');
+   popup = document.getElementById('guest-popup');
   if (NAMA_TAMU && popup) {
     document.getElementById('gp-name').textContent = NAMA_TAMU;
     setTimeout(() => popup.classList.add('show'), 300);
@@ -841,11 +841,11 @@ initNamaTamu();
 
 // ── CONFETTI ──────────────────────────────────────────────
 function launchConfetti() {
-  const colors = ['#6b9e70','#c49a3c','#9dc4a1','#ddb96a','#3d6b42','#f0e8d8','#e8dcc8'];
-  const shapes = ['■','●','▲','✦','✿'];
+   colors = ['#6b9e70','#c49a3c','#9dc4a1','#ddb96a','#3d6b42','#f0e8d8','#e8dcc8'];
+   shapes = ['■','●','▲','✦','✿'];
   for (let i = 0; i < 80; i++) {
     setTimeout(() => {
-      const c = document.createElement('div');
+       c = document.createElement('div');
       c.className = 'confetti-piece';
       c.textContent = shapes[Math.floor(Math.random() * shapes.length)];
       c.style.left = Math.random() * 100 + 'vw';
@@ -862,7 +862,7 @@ function launchConfetti() {
 
 // ── CLOSE GUEST POPUP ─────────────────────────────────────
 function closeGuestPopup() {
-  const popup = document.getElementById('guest-popup');
+   popup = document.getElementById('guest-popup');
   popup.classList.add('hide');
   setTimeout(() => { popup.style.display = 'none'; }, 500);
   launchConfetti();
@@ -872,8 +872,8 @@ function closeGuestPopup() {
 
 // ── AUTOPLAY MUSIK ────────────────────────────────────────
 function autoPlayMusic() {
-  const btn = document.getElementById('mp-btn');
-  const bars = document.getElementById('mp-bars');
+   btn = document.getElementById('mp-btn');
+   bars = document.getElementById('mp-bars');
   if (isPlaying) return;
   if (!audio) {
     audio = new Audio(MUSIC_URL);
@@ -884,7 +884,7 @@ function autoPlayMusic() {
     isPlaying = true; btn.textContent = '⏸'; bars.classList.remove('off');
     // Fade in volume
     let vol = 0;
-    const fadeIn = setInterval(() => {
+     fadeIn = setInterval(() => {
       vol = Math.min(vol + 0.05, 0.45);
       if (audio) audio.volume = vol;
       if (vol >= 0.45) clearInterval(fadeIn);
@@ -894,9 +894,9 @@ function autoPlayMusic() {
 
 // ── PETALS ────────────────────────────────────────────────
 function spawnPetals() {
-  const emojis = ['🌸','🌼','✿','🍃','🌺'];
+   emojis = ['🌸','🌼','✿','🍃','🌺'];
   for (let i = 0; i < 14; i++) {
-    const p = document.createElement('div');
+     p = document.createElement('div');
     p.className = 'petal';
     p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
     p.style.left = Math.random() * 100 + 'vw';
@@ -911,7 +911,7 @@ spawnPetals();
 // ── LOADING ───────────────────────────────────────────────
 window.addEventListener('load', () => {
   setTimeout(() => {
-    const ld = document.getElementById('ld');
+     ld = document.getElementById('ld');
     ld.classList.add('out');
     setTimeout(() => ld.remove(), 900);
   }, 1600);
@@ -919,7 +919,7 @@ window.addEventListener('load', () => {
 
 // ── ENVELOPE ─────────────────────────────────────────────
 function openInvitation() {
-  const env = document.getElementById('env');
+   env = document.getElementById('env');
   env.style.opacity = '0';
   env.style.transform = 'scale(1.05)';
   env.style.transition = 'all .7s';
@@ -938,14 +938,14 @@ function openInvitation() {
 
 // ── COUNTDOWN ─────────────────────────────────────────────
 function startCountdown() {
-  const target = new Date('2028-03-25T08:00:00+07:00');
+   target = new Date('2028-03-25T08:00:00+07:00');
   function tick() {
-    const diff = target - Date.now();
+     diff = target - Date.now();
     if (diff <= 0) return;
-    const d = Math.floor(diff / 864e5);
-    const h = Math.floor(diff % 864e5 / 36e5);
-    const m = Math.floor(diff % 36e5 / 6e4);
-    const s = Math.floor(diff % 6e4 / 1e3);
+     d = Math.floor(diff / 864e5);
+     h = Math.floor(diff % 864e5 / 36e5);
+     m = Math.floor(diff % 36e5 / 6e4);
+     s = Math.floor(diff % 6e4 / 1e3);
     document.getElementById('cd-d').textContent = String(d).padStart(3,'0');
     document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
@@ -958,7 +958,7 @@ function startCountdown() {
 let curPics = [], curIdx = 0;
 function buildGallery(cat) {
   curPics = cat === 'all' ? PHOTOS : PHOTOS.filter(p => p.cat === cat);
-  const grid = document.getElementById('galGrid');
+   grid = document.getElementById('galGrid');
   grid.innerHTML = curPics.map((p, i) => `
     <div class="gal-item" onclick="openLb(${i})">
       <img src="${p.url}" alt="${p.lbl}" loading="lazy" referrerpolicy="no-referrer"
@@ -977,7 +977,7 @@ function filterGal(cat, btn) {
 }
 function openLb(i) {
   curIdx = i;
-  const img = document.getElementById('lb-img');
+   img = document.getElementById('lb-img');
   img.referrerPolicy = 'no-referrer';
   img.src = curPics[i].url;
   document.getElementById('lb-cap').textContent = curPics[i].lbl;
@@ -998,14 +998,14 @@ document.addEventListener('keydown', e => {
 let audio = null, isPlaying = false;
 // Web Audio fallback
 let actx, gainNode, melTimer;
-const NOTES={C5:523.25,D5:587.33,E5:659.25,G5:783.99,A5:880,C4:261.63,G4:392,A4:440,B4:493.88};
-const MEL=[{n:'E5',d:.4},{n:'E5',d:.4},{n:'F5',d:.4},{n:'G5',d:.8},{n:'G5',d:.4},{n:'F5',d:.4},{n:'E5',d:.4},{n:'D5',d:.8},{n:'C5',d:.4},{n:'C5',d:.4},{n:'D5',d:.4},{n:'E5',d:.8},{n:'E5',d:.6},{n:'D5',d:.2},{n:'D5',d:1.2}];
-function NOTES2(f,s,d,t='triangle'){const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(gainNode);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(0,actx.currentTime+s);g.gain.linearRampToValueAtTime(.15,actx.currentTime+s+.04);g.gain.linearRampToValueAtTime(0,actx.currentTime+s+d-.04);o.start(actx.currentTime+s);o.stop(actx.currentTime+s+d);}
+ NOTES={C5:523.25,D5:587.33,E5:659.25,G5:783.99,A5:880,C4:261.63,G4:392,A4:440,B4:493.88};
+ MEL=[{n:'E5',d:.4},{n:'E5',d:.4},{n:'F5',d:.4},{n:'G5',d:.8},{n:'G5',d:.4},{n:'F5',d:.4},{n:'E5',d:.4},{n:'D5',d:.8},{n:'C5',d:.4},{n:'C5',d:.4},{n:'D5',d:.4},{n:'E5',d:.8},{n:'E5',d:.6},{n:'D5',d:.2},{n:'D5',d:1.2}];
+function NOTES2(f,s,d,t='triangle'){ o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(gainNode);o.type=t;o.frequency.value=f;g.gain.setValueAtTime(0,actx.currentTime+s);g.gain.linearRampToValueAtTime(.15,actx.currentTime+s+.04);g.gain.linearRampToValueAtTime(0,actx.currentTime+s+d-.04);o.start(actx.currentTime+s);o.stop(actx.currentTime+s+d);}
 function playMelody(){if(!isPlaying)return;let t=0;MEL.forEach(({n,d})=>{NOTES2(NOTES[n]||440,t,d*.9);NOTES2((NOTES[n]||440)*.5,t,d*.9,'sine');t+=d;});melTimer=setTimeout(playMelody,t*1000+200);}
 
 function toggleMusic() {
-  const btn = document.getElementById('mp-btn');
-  const bars = document.getElementById('mp-bars');
+   btn = document.getElementById('mp-btn');
+   bars = document.getElementById('mp-bars');
   if (isPlaying) {
     isPlaying = false;
     if (audio) audio.pause();
@@ -1031,19 +1031,19 @@ function startWebAudio(btn, bars) {
 }
 
 // ── UCAPAN ────────────────────────────────────────────────
-const UC_KEY = 'ucapan_tamir_rahayu_2028';
+ UC_KEY = 'ucapan_tamir_rahayu_2028';
 async function kirimUcapan() {
-  const nm = document.getElementById('u-nm').value.trim();
-  const msg = document.getElementById('u-msg').value.trim();
-  const hd = document.getElementById('u-hd').value;
+   nm = document.getElementById('u-nm').value.trim();
+   msg = document.getElementById('u-msg').value.trim();
+   hd = document.getElementById('u-hd').value;
   if (!nm || !msg || !hd) { alert('Mohon lengkapi semua field ya 🙏'); return; }
-  const btn = document.querySelector('#ucapan .btn-send');
+   btn = document.querySelector('#ucapan .btn-send');
   btn.disabled = true; btn.textContent = 'Mengirim...';
-  const data = { nama: nm, pesan: msg, kehadiran: hd };
-  const ok = await sbInsert('ucapan', data);
+   data = { nama: nm, pesan: msg, kehadiran: hd };
+   ok = await sbInsert('ucapan', data);
   if (!ok) {
     // Fallback localStorage
-    const list = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
+     list = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
     list.unshift({ nm, msg, hd, tgl: new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) });
     localStorage.setItem(UC_KEY, JSON.stringify(list));
   }
@@ -1051,7 +1051,7 @@ async function kirimUcapan() {
   document.getElementById('u-msg').value = '';
   document.getElementById('u-hd').value = '';
   btn.disabled = false; btn.textContent = 'Kirim Ucapan 💌';
-  const okEl = document.getElementById('send-ok');
+   okEl = document.getElementById('send-ok');
   okEl.style.display = 'block'; setTimeout(() => okEl.style.display = 'none', 4000);
   loadUcapan();
 }
@@ -1059,15 +1059,15 @@ async function loadUcapan() {
   let list = await sbSelect('ucapan');
   if (!list || !list.length) {
     // Fallback localStorage
-    const local = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
+     local = JSON.parse(localStorage.getItem(UC_KEY) || '[]');
     list = local.map(u => ({ nama: u.nm, pesan: u.msg, kehadiran: u.hd, created_at: u.tgl }));
   }
   document.getElementById('uc-ct').textContent = list.length;
-  const el = document.getElementById('uc-list');
+   el = document.getElementById('uc-list');
   if (!list.length) { el.innerHTML = '<div style="text-align:center;color:var(--text-l);font-size:.83rem;font-style:italic;padding:1.5rem">Belum ada ucapan. Jadilah yang pertama! 💌</div>'; return; }
-  const icons = {'Hadir':'✅','Tidak Hadir':'❌','Mungkin':'🤔'};
+   icons = {'Hadir':'✅','Tidak Hadir':'❌','Mungkin':'🤔'};
   el.innerHTML = list.map(u => {
-    const tgl = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) : '';
+     tgl = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}) : '';
     return `<div class="uc-card">
       <div class="uc-head">
         <span class="uc-nm">👤 ${u.nama||u.nm}</span>
@@ -1080,10 +1080,10 @@ async function loadUcapan() {
 }
 
 // ── RSVP ──────────────────────────────────────────────────
-const RSVP_KEY = 'rsvp_tamir_rahayu_2028';
+ RSVP_KEY = 'rsvp_tamir_rahayu_2028';
 async function kirimRSVP() {
-  const nm = document.getElementById('r-nm').value.trim();
-  const jml = document.getElementById('r-jml').value;
+   nm = document.getElementById('r-nm').value.trim();
+   jml = document.getElementById('r-jml').value;
   const hd = document.getElementById('r-hd').value;
   if (!nm || !jml) { alert('Mohon isi nama dan jumlah tamu 🙏'); return; }
   const btn = document.querySelector('#rsvp .btn-send');
